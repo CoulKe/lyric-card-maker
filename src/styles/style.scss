@@ -3,7 +3,7 @@
   .buttons {
     @include flexbox;
     @include justify-content(space-around);
-    a {
+    a, button {
       color: #fff;
       background-color: #000;
       outline: none;
