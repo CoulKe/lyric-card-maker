@@ -5,9 +5,9 @@
     </router-link>
     <div class="display-area">
       <img :src="img" alt="" id="uploadedImage" />
-      <div id="saved-text">
-        <p>{{ lyrics }}</p>
-        <p>By {{ artist }}</p>
+      <div id="saved-texts">
+        <div v-html="formatLyrics" id="formattedLyrics"></div>
+        <p id="artist">By {{ artist }}</p>
       </div>
     </div>
     <!-- display-area-->
@@ -17,20 +17,18 @@
       <button @click="makeImg">Download</button>
     </div>
   </div>
-  <Canvas :width="250" :height="500" />
 </template>
 
 <script>
-import Canvas from "../components/Canvas";
+import html2canvas from "html2canvas";
+
 export default {
-  components:{
-    Canvas
-  },
   data() {
     return {
       img: "",
       lyrics: "",
       artist: "",
+      formattedLyrics: "",
     };
   },
   mounted() {
@@ -38,40 +36,53 @@ export default {
     this.lyrics = this.$store.getters.getLyrics;
     this.artist = this.$store.getters.getArtist;
   },
-  methods:{
+  computed: {
+    formatLyrics: function () {
+      let formatted = this.lyrics
+        .split("\n")
+        .map((line) => {
+          if (line.length !== 0) {
+            return `<p>${line}</p>`;
+          }
+        })
+        .join("<br />");
+      return formatted;
+    },
+  },
+  methods: {
     makeImg() {
-      let myCanvas = document.querySelector("canvas");
-      let image = document.querySelector("#uploadedImage");
-      let ctx = ""; //context
-      let realHeight="";
-      let realWidth="";
+      const _self = this;
+      let displayArea = document.querySelector(".display-area");
+      let displayAreaCopy = displayArea.cloneNode(true);
+      displayAreaCopy.setAttribute("class", "screenshot");
+      let imageCopy = displayAreaCopy.firstChild;
+      let textCopy = imageCopy.nextSibling;
+      imageCopy.setAttribute("id", "image-copy");
+      textCopy.setAttribute("id", "text-copy");
+      document.body.appendChild(displayAreaCopy);
 
-      //real image dimensions
-      realWidth = image.naturalWidth;
-      realHeight = image.naturalHeight;
-
-      //canvas dimensions
-      myCanvas.setAttribute("width", realWidth);
-      myCanvas.setAttribute("height", realHeight);
-      
-      //Draw image
-      ctx = myCanvas.getContext("2d");
-      ctx.drawImage(image, 0, 0, realWidth, realHeight);
-      let dataSrc = myCanvas.toDataURL("image/png");
-      let name = image.alt;
-      this.downloadImage(dataSrc, name);
+      html2canvas(displayAreaCopy).then(function (canvas) {
+        document.body.appendChild(canvas);
+      }).then(function(){
+        let canvas = document.querySelector('canvas');
+      let dataSrc = canvas.toDataURL("image/png");
+      _self.downloadImage(dataSrc);
+      });
     },
-    downloadImage(dataSrc, filename = "untitled.jpeg") {
-      let a = document.querySelector("#download_link");
-      a.href = dataSrc;
-      a.download = filename;
-      a.click();
+      downloadImage(dataSrc, filename = "untitled.jpeg") {
+        let a = document.querySelector("#download_link");
+        a.href = dataSrc;
+        a.download = filename;
+        a.click();
+      },
     },
-  }
-};
+}
 </script>
 
-<style lang='scss' scoped>
+<style lang='scss'>
+#download_link {
+  display: none;
+}
 .display-container {
   width: max-content;
   img {
@@ -81,20 +92,52 @@ export default {
   }
 }
 .display-area {
-  
+  position: relative;
   #uploadedImage {
     object-fit: contain;
     width: 250px;
     height: 400px;
     border-radius: 4px;
-    position: relative;
   }
-  #saved-text{
+  #saved-texts {
     position: absolute;
     padding: 0.8rem;
-    p{
+    text-align: left;
+    p {
       color: #000;
       background-color: #fff;
+      word-break: break-word;
+      display: inline;
+      padding: 4px;
+      line-height: 2rem;
+    }
+  }
+}
+.screenshot {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  #image-copy {
+    object-fit: cover;
+    width: 500px;
+    height: 650px;
+  }
+  #text-copy {
+    position: absolute;
+    padding: 0.8rem;
+    display: inline-block;
+    text-align: left;
+    left: 0;
+    bottom: 50px;
+    font-size: larger;
+    font-weight: 600;
+    p {
+      color: #000;
+      background-color: #fff;
+      word-break: break-word;
+      display: inline;
+      padding: 4px;
+      line-height: 2rem;
     }
   }
 }
