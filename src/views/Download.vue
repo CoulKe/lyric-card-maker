@@ -7,7 +7,7 @@
       <img :src="img" alt="" id="uploadedImage" />
       <div id="saved-texts">
         <div v-html="formatLyrics" id="formattedLyrics"></div>
-        <p id="artist">By {{ artist }}</p>
+        <p id="artist">- {{ artist }}</p>
       </div>
     </div>
     <!-- display-area-->
@@ -46,6 +46,7 @@ export default {
           }
         })
         .join("<br />");
+    formatted =`<p class = 'quotes'>&OpenCurlyDoubleQuote;</p> <br /> ${formatted} <p class = 'quotes'>&CloseCurlyDoubleQuote;</p>`;
       return formatted;
     },
   },
@@ -61,25 +62,31 @@ export default {
       textCopy.setAttribute("id", "text-copy");
       document.body.appendChild(displayAreaCopy);
 
-      html2canvas(displayAreaCopy).then(function (canvas) {
-        document.body.appendChild(canvas);
-      }).then(function(){
-        let canvas = document.querySelector('canvas');
-      let dataSrc = canvas.toDataURL("image/png");
-      _self.downloadImage(dataSrc);
-      });
+      html2canvas(displayAreaCopy)
+        .then(function (canvas) {
+          document.body.appendChild(canvas);
+        })
+        .then(function () {
+          let canvas = document.querySelector("canvas");
+          let dataSrc = canvas.toDataURL("image/png");
+          _self.downloadImage(dataSrc);
+        });
     },
-      downloadImage(dataSrc, filename = "untitled.jpeg") {
-        let a = document.querySelector("#download_link");
-        a.href = dataSrc;
-        a.download = filename;
-        a.click();
-      },
+    downloadImage(dataSrc, filename = "untitled.jpeg") {
+      let a = document.querySelector("#download_link");
+      a.href = dataSrc;
+      a.download = filename;
+      a.click();
     },
-}
+  },
+};
 </script>
 
 <style lang='scss'>
+.quotes{
+  font-weight: bolder;
+  font-size: larger;
+}
 #download_link {
   display: none;
 }
@@ -103,6 +110,7 @@ export default {
     position: absolute;
     padding: 0.8rem;
     text-align: left;
+    display: none;
     p {
       color: #000;
       background-color: #fff;
