@@ -41,7 +41,10 @@ export default {
       uploadField.click();
     },
     dropImage($event) {
+      const _self = this;
       let uploadedFile = $event.dataTransfer.files[0];
+      let imgName = uploadedFile.name;
+      console.log(uploadedFile.name)
       const reader = new FileReader();
       reader.readAsDataURL(uploadedFile);
       this.show = true;
@@ -50,13 +53,15 @@ export default {
         let src = this.result;
         let imgElement = document.querySelector("#uploadedImage");
         imgElement.src = src;
-        imgElement.alt = src;
+        imgElement.alt = imgName;
+        _self.$store.commit("setImgName", imgName);
       };
     },
     uploadFile() {
       const _self = this;
       let uploadField = document.querySelector("#upload-field");
       const uploadedFile = uploadField.files[0];
+      let imgName = uploadedFile.name; 
 
       if (uploadedFile) {
         if (uploadedFile.size > 4718592) {
@@ -70,8 +75,9 @@ export default {
             let src = this.result;
             let imgElement = document.querySelector("#uploadedImage");
             imgElement.src = src;
-            imgElement.alt = src;
+            imgElement.alt = imgName;
             _self.$store.commit("setImg", src);
+            _self.$store.commit("setImgName", imgName);
           };
         }
       }
