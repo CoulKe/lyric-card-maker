@@ -35,6 +35,22 @@ export default {
       show: false,
     };
   },
+  mounted() {
+    //reset lyrics store
+    this.$store.commit("setImg", "");
+    this.$store.commit("setArtist", "");
+    this.$store.commit("setLyrics", "");
+    this.$store.commit("setImgName", "");
+    //reset filters store
+    this.$store.commit("setBlur", 0);
+    this.$store.commit("setBrightness", 100);
+    this.$store.commit("setContrast", 100);
+    this.$store.commit("setGrayscale", 0);
+    this.$store.commit("setHue", 0);
+    this.$store.commit("setInvert", 0);
+    this.$store.commit("setSaturate", 100);
+    this.$store.commit("setSepia", 0);
+  },
   methods: {
     clickInput() {
       let uploadField = document.querySelector("#upload-field");
@@ -44,7 +60,7 @@ export default {
       const _self = this;
       let uploadedFile = $event.dataTransfer.files[0];
       let imgName = uploadedFile.name;
-      console.log(uploadedFile.name)
+      console.log(uploadedFile.name);
       const reader = new FileReader();
       reader.readAsDataURL(uploadedFile);
       this.show = true;
@@ -61,7 +77,7 @@ export default {
       const _self = this;
       let uploadField = document.querySelector("#upload-field");
       const uploadedFile = uploadField.files[0];
-      let imgName = uploadedFile.name; 
+      let imgName = uploadedFile.name;
 
       if (uploadedFile) {
         if (uploadedFile.size > 4718592) {
