@@ -3,16 +3,24 @@
     <router-link to="/">
       <img src="../assets/svg/home-icon.svg" alt="home icon" />
     </router-link>
+    
     <div class="display-area">
-      <img :src="img" alt="" id="uploadedImage" />
+      <img :src="img" alt="" id="uploadedImg" />
       <div id="saved-texts">
         <div v-html="formatLyrics" id="formattedLyrics"></div>
         <p id="artist">- {{ artist }}</p>
       </div>
+      <div id="outro">
+      <h1>Your image is ready 😜</h1>
+      <p>
+        Click the download button to download or click home to upload a new
+        image.
+      </p>
+    </div>
     </div>
     <!-- display-area-->
     <div class="buttons">
-      <router-link to="/form">Edit</router-link>
+      <router-link to="/form">Edit lyrics</router-link>
       <a href="" id="download_link"></a>
       <button @click="makeImg">Download</button>
     </div>
@@ -46,7 +54,7 @@ export default {
           }
         })
         .join("<br />");
-    formatted =`<p class = 'quotes'>&OpenCurlyDoubleQuote;</p> <br /> ${formatted} <p class = 'quotes'>&CloseCurlyDoubleQuote;</p>`;
+      formatted = `<p class = 'quotes'>&OpenCurlyDoubleQuote;</p> <br /> ${formatted} <p class = 'quotes'>&CloseCurlyDoubleQuote;</p>`;
       return formatted;
     },
   },
@@ -57,6 +65,7 @@ export default {
       let displayAreaCopy = displayArea.cloneNode(true);
       displayAreaCopy.setAttribute("class", "screenshot");
       let imageCopy = displayAreaCopy.firstChild;
+      displayAreaCopy.lastChild.remove();
       let textCopy = imageCopy.nextSibling;
       imageCopy.setAttribute("id", "image-copy");
       textCopy.setAttribute("id", "text-copy");
@@ -69,7 +78,8 @@ export default {
         .then(function () {
           let canvas = document.querySelector("canvas");
           let dataSrc = canvas.toDataURL("image/png");
-          _self.downloadImage(dataSrc);
+          let imgName = _self.$store.getters.getImgName;
+          _self.downloadImage(dataSrc, imgName);
         });
     },
     downloadImage(dataSrc, filename = "untitled.jpeg") {
@@ -83,7 +93,7 @@ export default {
 </script>
 
 <style lang='scss'>
-.quotes{
+.quotes {
   font-weight: bolder;
   font-size: larger;
 }
@@ -100,8 +110,9 @@ export default {
 }
 .display-area {
   position: relative;
-  #uploadedImage {
+  #uploadedImg {
     object-fit: contain;
+    display: none;
     width: 250px;
     height: 400px;
     border-radius: 4px;

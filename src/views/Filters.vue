@@ -6,7 +6,7 @@
     <div class="display-area">
       <img
         :alt="imgName"
-        id="filterImg"
+        id="uploadedImg"
         :style="{
           filter: `grayscale(${grayscale}%) blur(${blur}px)
              brightness(${brightness}%) contrast(${contrast}%) 
@@ -96,8 +96,9 @@
     <div class="buttons">
       <router-link to="/form">Edit lyrics</router-link>
       <a href="" id="download_link"></a>
-      <button>Reset</button>
+      <button @click="applyFilters">Save filters</button>
     </div>
+    <canvas id="hiddenCanvas"></canvas>
   </div>
 </template>
 <script>
@@ -131,6 +132,20 @@ export default {
     this.sepia = this.$store.getters.getSepia;
   },
   methods: {
+    applyFilters() {
+      let hiddenCanvas = document.querySelector("#hiddenCanvas");
+      let ctx = hiddenCanvas.getContext("2d");
+      let image = document.querySelector("#uploadedImg");
+      ctx.filter = `grayscale(${this.grayscale}%) blur(${this.blur}px)
+             brightness(${this.brightness}%) contrast(${this.contrast}%) 
+             hue-rotate(${this.hue}deg)
+             invert(${this.invert}%) saturate(${this.saturate}%) sepia(${this.sepia}%)`;
+      ctx.drawImage(image, 0, 0, hiddenCanvas.width, hiddenCanvas.height);
+      let imgUrl = hiddenCanvas.toDataURL("image/png");
+
+      this.$store.commit("setImg", imgUrl);
+      window.location.pathname = "form";
+    },
     leftSlide() {
       let slideContents = document.querySelectorAll(".filter");
       if (this.slide === 0) {
@@ -184,15 +199,21 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-#filterImg,
+<style lang="scss" scoped>
+#uploadedImg,
 #filters {
   height: 50%;
   width: 100%;
   max-width: 100%;
 }
-#filterImg {
+#uploadedImg {
   object-fit: cover;
+  display: block;
+}
+#hiddenCanvas {
+  display: none;
+  width: 500px;
+  height: 650px;
 }
 #filters {
   display: flex;

@@ -12,7 +12,7 @@
       </form>
     </div> <!-- display-area-->
     <div class="buttons">
-      <router-link to="/">Back</router-link>
+      <router-link to="/">Change image</router-link>
       <router-link to="/download" @click="confirmFields($event)">Next</router-link>
     </div>
   </div>
@@ -27,6 +27,9 @@ export default {
     }
   },
   methods:{
+    back(){
+      history.back();
+    },
     confirmFields($event){
       if (this.artist.trim() === "" && this.lyrics.trim() === "") {
         $event.preventDefault();
