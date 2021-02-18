@@ -5,7 +5,7 @@
     </router-link>
     
     <div class="display-area">
-      <img :src="img" alt="" id="uploadedImg" />
+      <img :src="img" alt="" id="download__uploadedImg" />
       <div id="saved-texts">
         <div v-html="formatLyrics" id="formattedLyrics"></div>
         <p id="artist">- {{ artist }}</p>
@@ -110,7 +110,7 @@ export default {
 }
 .display-area {
   position: relative;
-  #uploadedImg {
+  #download__uploadedImg {
     object-fit: contain;
     display: none;
     width: 250px;

@@ -6,7 +6,7 @@
     <div class="display-area">
       <img
         :alt="imgName"
-        id="uploadedImg"
+        id="filters__uploadedImg"
         :style="{
           filter: `grayscale(${grayscale}%) blur(${blur}px)
              brightness(${brightness}%) contrast(${contrast}%) 
@@ -135,7 +135,7 @@ export default {
     applyFilters() {
       let hiddenCanvas = document.querySelector("#hiddenCanvas");
       let ctx = hiddenCanvas.getContext("2d");
-      let image = document.querySelector("#uploadedImg");
+      let image = document.querySelector("#filters__uploadedImg");
       ctx.filter = `grayscale(${this.grayscale}%) blur(${this.blur}px)
              brightness(${this.brightness}%) contrast(${this.contrast}%) 
              hue-rotate(${this.hue}deg)
@@ -200,13 +200,13 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-#uploadedImg,
+#filters__uploadedImg,
 #filters {
   height: 50%;
   width: 100%;
   max-width: 100%;
 }
-#uploadedImg {
+#filters__uploadedImg {
   object-fit: cover;
   display: block;
 }
