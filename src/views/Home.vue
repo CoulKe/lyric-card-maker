@@ -71,6 +71,7 @@ export default {
         let imgElement = document.querySelector("#uploadedImage");
         imgElement.src = src;
         imgElement.alt = imgName;
+        _self.$store.commit("setImg", src);
         _self.$store.commit("setImgName", imgName);
       };
     },
