@@ -1,6 +1,7 @@
 const state = {
   image: "",
   artist: "",
+  song: "",
   lyrics: "",
   imgName: "",
 };
@@ -14,6 +15,9 @@ const mutations = {
   setArtist: function(state, artistName) {
     state.artist = artistName;
   },
+  setSong: function(state, songName) {
+    state.song = songName;
+  },
   setLyrics: function(state, lyrics) {
     state.lyrics = lyrics;
   },
@@ -21,6 +25,9 @@ const mutations = {
 const getters = {
   getImg: function(state) {
     return state.image;
+  },
+  getSong: function(state) {
+    return state.song;
   },
   getImgName: function(state) {
     return state.imgName;

@@ -8,7 +8,7 @@
       <img :src="img" alt="" id="download__uploadedImg" />
       <div id="saved-texts">
         <div v-html="formatLyrics" id="formattedLyrics"></div>
-        <p id="artist">- {{ artist }}</p>
+        <p id="artist">- {{ artist }} ({{ song }})</p>
       </div>
       <div id="outro">
       <h1>Your image is ready 😜</h1>
@@ -36,6 +36,7 @@ export default {
       img: "",
       lyrics: "",
       artist: "",
+      song: "",
       formattedLyrics: "",
     };
   },
@@ -43,6 +44,7 @@ export default {
     this.img = this.$store.getters.getImg;
     this.lyrics = this.$store.getters.getLyrics;
     this.artist = this.$store.getters.getArtist;
+    this.song = this.$store.getters.getSong;
   },
   computed: {
     formatLyrics: function () {

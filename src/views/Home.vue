@@ -39,6 +39,7 @@ export default {
     //reset lyrics store
     this.$store.commit("setImg", "");
     this.$store.commit("setArtist", "");
+    this.$store.commit("setSong", "");
     this.$store.commit("setLyrics", "");
     this.$store.commit("setImgName", "");
     //reset filters store

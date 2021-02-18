@@ -6,9 +6,11 @@
     <div class="display-area">
       <form>
           <label for="artist">Artist: </label>
-          <input type="text" id="artist" v-model="artist">
+          <input type="text" id="artist" v-model.lazy="artist">
+          <label for="song">Song name: </label>
+          <input type="text" id="song" v-model.lazy="song">
           <label for="lyrics">Lyrics: </label>
-          <textarea id="lyrics" cols="30" rows="10" v-model="lyrics"></textarea>
+          <textarea id="lyrics" cols="30" rows="10" v-model.lazy="lyrics"></textarea>
       </form>
     </div> <!-- display-area-->
     <div class="buttons">
@@ -23,6 +25,7 @@ export default {
   data() {
     return{
       artist: '',
+      song: '',
       lyrics: '',
     }
   },
@@ -43,11 +46,15 @@ export default {
   },
   mounted(){
       this.artist = this.$store.getters.getArtist
+      this.song = this.$store.getters.getSong
       this.lyrics = this.$store.getters.getLyrics
   },
   watch: {
     artist: function() {
       this.$store.commit('setArtist', this.artist)
+    },
+    song: function() {
+      this.$store.commit('setSong', this.song)
     },
     lyrics: function() {
       this.$store.commit('setLyrics', this.lyrics)
