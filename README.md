@@ -1,5 +1,15 @@
 # lyric-maker
 
+### Picture sample
+
+![Man in the mirror](man-in-the-mirror.jpg)
+
+### Demo
+![Photo editor gif](demo.gif)
+
+### Description
+Writes quoted lyrics on image
+
 ## Project setup
 ```
 npm install
