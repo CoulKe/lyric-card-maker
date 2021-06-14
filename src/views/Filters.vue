@@ -119,6 +119,10 @@ export default {
     };
   },
   mounted() {
+    if(!this.$store.getters.getImg){
+      alert('You need to upload an image to continue')
+      this.$router.push('/')
+    }
     this.img = this.$store.getters.getImg;
     this.imgName = this.$store.getters.getImgName;
     //filters
@@ -144,7 +148,7 @@ export default {
       let imgUrl = hiddenCanvas.toDataURL("image/png");
 
       this.$store.commit("setImg", imgUrl);
-      window.location.pathname = "form";
+      this.$router.push('/form');
     },
     leftSlide() {
       let slideContents = document.querySelectorAll(".filter");

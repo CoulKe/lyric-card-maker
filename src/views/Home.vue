@@ -82,9 +82,6 @@ export default {
       let imgName = uploadedFile.name;
 
       if (uploadedFile) {
-        if (uploadedFile.size > 4718592) {
-          alert("Uploaded file is too large");
-        } else {
           const reader = new FileReader();
           reader.readAsDataURL(uploadedFile);
           this.show = true;
@@ -97,7 +94,6 @@ export default {
             _self.$store.commit("setImg", src);
             _self.$store.commit("setImgName", imgName);
           };
-        }
       }
     },
   },

@@ -15,7 +15,7 @@
     </div> <!-- display-area-->
     <div class="buttons">
       <router-link to="/">Change image</router-link>
-      <router-link to="/download" @click="confirmFields($event)">Next</router-link>
+      <button @click="confirmFields($event)">Next</button>
     </div>
   </div>
 </template>
@@ -42,9 +42,16 @@ export default {
         $event.preventDefault();
         alert('Fill all fields')
       }
+      else{
+        this.$router.push('/download')
+      }
     }
   },
   mounted(){
+    if(!this.$store.getters.getImg){
+      alert('You need to upload an image to continue')
+      this.$router.push('/')
+    }
       this.artist = this.$store.getters.getArtist
       this.song = this.$store.getters.getSong
       this.lyrics = this.$store.getters.getLyrics
@@ -67,9 +74,9 @@ export default {
     form{
         text-align: left;
         font-weight: bold;
-        @include flexbox;
-        @include flex-direction(column);
-        @include align-items(center);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         label{
             width: 94%;
             line-height: 2rem;

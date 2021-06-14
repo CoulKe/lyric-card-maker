@@ -48,6 +48,23 @@ export default {
     };
   },
   mounted() {
+    if(!this.$store.getters.getImg){
+      alert('You need to upload an image to continue')
+      this.$router.push('/')
+    }
+    if(!this.$store.getters.getLyrics){
+      alert('You need to insert lyrics to continue')
+      this.$router.push('/form')
+    }
+    if(!this.$store.getters.getArtist){
+      alert('You need to insert artist name to continue')
+      this.$router.push('/form')
+    }
+    if(!this.$store.getters.getSong){
+      alert('You need to insert song name to continue')
+      this.$router.push('/form')
+    }
+    
     this.img = this.$store.getters.getImg;
     this.lyrics = this.$store.getters.getLyrics;
     this.artist = this.$store.getters.getArtist;
