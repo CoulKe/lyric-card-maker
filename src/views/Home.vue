@@ -18,7 +18,6 @@
         or <br />
         click to upload
       </h1>
-      <p v-if="!show">(max size: 4.5 mb)</p>
     </div>
     <!-- display-area-->
     <div class="buttons" v-if="show">
